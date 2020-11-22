@@ -15,5 +15,9 @@ def get_public_key():
 def get_oauth2_url():
     return "your app's url"
 
+def get_bot_name():
+    return "your bot's name"
 
+def get_bot_token():
+    return "your bot's token"
 
