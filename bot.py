@@ -1,19 +1,20 @@
-import os
-
 import discord as d
-from dotenv import load_dotenv
-
-import private.app_data as app
-
-print(app.get_bot_token())
-
-load_dotenv()
-TOKEN = os.getenv(app.get_bot_token())
+import private.app_data as my_app
 
 client = d.Client()
 
+TOKEN = my_app.get_bot_token()
+
 @client.event
 async def on_ready():
-    print(f'{client.user} has conected to Discord!')
-    
+    print('We have logged in as {0.user}'.format(client))
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return message.channel.send('Adm corno!')
+
+    if message.content.startswith('$hello'):
+        await message.channel.send('Hello!')
+        
 client.run(TOKEN)
