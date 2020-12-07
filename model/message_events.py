@@ -3,8 +3,12 @@ from discord.ext.commands import Bot
 import re
 
 def verify_message(bot: Bot, message):
-    if message.content == str((bot.command_prefix + "bom dia")):
+    if message.content == str(bot.command_prefix + "bom dia"):
         return f'Bom dia {message.author}'
+
+    if message.content == str(bot.command_prefix + "ping"):
+        return "pong"
+
     if len(re.findall((bot.command_prefix + "nick"), message.content)):
 
 
