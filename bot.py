@@ -1,9 +1,10 @@
 import discord as d
 import private.app_data as my_app
 from discord.ext.commands import Bot
+from model.message_events import verify_message
 
 TOKEN = my_app.get_bot_token()
-bot = Bot(command_prefix="?")
+bot = Bot(command_prefix="+")
 
 @bot.event
 async def on_ready():
@@ -11,8 +12,10 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.content == 'test':
-        await message.channel.send('Bip bip bop 1 2 3, rotom dex on')
+    if verify_message(bot, message):
+        await message.channel.send(verify_message(bot, message))
+
+# --------------------------------
 
 # class MyClient(d.Client):
 #     async def on_ready(self):
