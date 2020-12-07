@@ -25,3 +25,5 @@
 /set-nick <nickname>: seta o próprio nickname
 
 /wooper: send a wooper image
+
+/meta <format>: mostrar o meta dos últimos torneios
