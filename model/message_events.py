@@ -31,6 +31,12 @@ def verify_message(bot: Bot, message):
         +gen-elimination: gera um torneio do tipo *eliminação simples* com os usuários que fizeram check-in
         """
 
+    if str(message.content)[:9] == "+set-nick": #vai precisar usar o DAO para isso
+        pass
+
+    if str(message.content)[:5] == "+nick":
+        pass # preciso registrar isso no banco agr
+
     # if len(re.findall(( bot.command_prefix + "nick"), message.content)):
     #     print("sup")
 
