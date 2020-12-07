@@ -16,3 +16,5 @@ def create_connection(db_file):
 
 if __name__ == '__main__':
     create_connection(r"..\databases\db_nicknames.db")
+
+#Tutorial: https://www.sqlitetutorial.net/sqlite-python/creating-database/
