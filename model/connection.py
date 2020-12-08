@@ -14,8 +14,7 @@ def create_connection(db_file):
             conn.close()
 
 
-
 if __name__ == '__main__':
     create_connection(r"..\databases\db_nicknames.db")
 
-#Tutorial: https://www.sqlitetutorial.net/sqlite-python/creating-database/
+# Tutorial: https://www.sqlitetutorial.net/sqlite-python/creating-database/
