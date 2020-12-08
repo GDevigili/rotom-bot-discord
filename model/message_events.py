@@ -4,13 +4,11 @@ import re
 
 
 def verify_message(bot: Bot, message):
-    if message.content in [bot.command_prefix + "bom dia",
-                           bot.command_prefix + "boa tarde",
-                           bot.command_prefix + "boa noite"]:
-        greet(message)
+    if str(message.content) in greet_list(bot):
+        return greet(message)
 
     if message.content == str(bot.command_prefix + "functions"):
-        #modificar posteriormente para ele ler o .md com as funções
+        # modificar posteriormente para ele ler o .md com as funções
         return """
         Aqui ezztá tudo o que eu consigo fazer bzz:
         **Funções:**
@@ -27,21 +25,31 @@ def verify_message(bot: Bot, message):
         +gen-elimination: gera um torneio do tipo *eliminação simples* com os usuários que fizeram check-in
         """
 
-    if str(message.content)[:9] == "+set-nick": #vai precisar usar o DAO para isso
+    if str(message.content)[:9] == "+set-nick":  # vai precisar usar o DAO para isso
         pass
 
     if str(message.content)[:5] == "+nick":
-        pass # preciso registrar isso no banco agr
+        pass  # preciso registrar isso no banco agr
 
     # if len(re.findall(( bot.command_prefix + "nick"), message.content)):
     #     print("sup")
 
+
 def greet(message):
-    return f"{message.content} {str(message.author)[:-5]}"
+    return str(message.content)[1:] + " " + str(str(message.author)[:-5])
+
+
+def greet_list(bot: Bot):
+    greet_list = ["bom dia",
+                 "boa tarde",
+                 "boa noite",
+                 "oi"]
+    return [str(bot.command_prefix) + greet for greet in greet_list]
+
 
 def set_nick(bot: Bot, message):
     pass
 
 
-def get_nick(bot:Bot, message):
+def get_nick(bot: Bot, message):
     pass
