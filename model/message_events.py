@@ -4,14 +4,10 @@ import re
 
 
 def verify_message(bot: Bot, message):
-    if message.content == str(bot.command_prefix + "bom dia"):
-        return f"Bom dia {str(message.author)[:-5]}"
-
-    if message.content == str(bot.command_prefix + "boa tarde"):
-        return f"Boa tarde {str(message.author)[:-5]}"
-
-    if message.content == str(bot.command_prefix + "boa noite"):
-        return f"Boa noite {str(message.author)[:-5]}"
+    if message.content in [bot.command_prefix + "bom dia",
+                           bot.command_prefix + "boa tarde",
+                           bot.command_prefix + "boa noite"]:
+        greet(message)
 
     if message.content == str(bot.command_prefix + "functions"):
         #modificar posteriormente para ele ler o .md com as funções
@@ -40,6 +36,8 @@ def verify_message(bot: Bot, message):
     # if len(re.findall(( bot.command_prefix + "nick"), message.content)):
     #     print("sup")
 
+def greet(message):
+    return f"{message.content} {str(message.author)[:-5]}"
 
 def set_nick(bot: Bot, message):
     pass
