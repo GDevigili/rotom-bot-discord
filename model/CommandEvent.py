@@ -16,10 +16,10 @@ class CommandEvent:
             return self.greet()
 
         if self.command == "+set-nick":  # vai precisar usar o DAO para isso
-            return self.under_construction()
+            return self.set_nick()
 
         if self.command == "+nick":
-            return self.under_construction()  # preciso registrar isso no banco agr
+            return self.get_nick()  # preciso registrar isso no banco agr
 
         # if len(re.findall(( bot.command_prefix + "nick"), message.content)):
         #     print("sup")
@@ -39,8 +39,8 @@ class CommandEvent:
         return [str(self.bot.command_prefix) + greet for greet in greet_list]
 
     def set_nick(self):
-        pass
+        return self.under_construction()
 
     def get_nick(self):
-        pass
+        return self.under_construction()
 
