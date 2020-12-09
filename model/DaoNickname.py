@@ -3,7 +3,7 @@ import sqlite3
 
 class DaoNickname:
 
-    def __init__(self, db_file=r"../databases/db_nicknames.db"):
+    def __init__(self, db_file=r"databases/db_nicknames.db"):
         conn = None
         self.db_file = db_file
 
@@ -43,6 +43,8 @@ class DaoNickname:
     '''
 
     def select_all(self):
+        conn = None
+
         try:
             conn = sqlite3.connect(self.db_file)
             cur = conn.cursor()
@@ -89,11 +91,13 @@ class DaoNickname:
                 conn.close()
 
     def select_nickname(self, discord_nick):
+        conn = None
+
         try:
             conn = sqlite3.connect(self.db_file)
             cur = conn.cursor()
 
-            cur.execute(f"""SELECT discord_nick, game_nick 
+            cur.execute(f"""SELECT game_nick 
                         FROM nicknames 
                         WHERE discord_nick = '{discord_nick}'
                         ORDER BY id DESC

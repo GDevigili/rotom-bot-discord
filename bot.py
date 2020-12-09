@@ -15,8 +15,9 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if str(message)[0] == bot.command_prefix:
-        await message.channel.send(CommandEvent(bot, message).verify_message())
+    if str(message.content)[0] == bot.command_prefix:
+        ce = CommandEvent(bot, message)
+        await message.channel.send(ce.verify_message())
 
 # --------------------------------
 
