@@ -2,19 +2,6 @@
 from discord.ext.commands import Bot
 from model.DaoNickname import DaoNickname
 
-
-def set_nick(msg, game_nick):
-    dao = DaoNickname()
-    if dao.insert(msg.author, game_nick):
-        return (f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso :)! \n"
-                f"Ou será que eu deveria te chamar de **{game_nick}** agora? ")
-    else:
-        return f"Aconteceu o seguinte erro:\n```{self.error_message()}```\nPor favor, informe "
-
-
-    @staticmethod
-    def under_construction(self):
-        return "Oopzz! Parece que esta função ainda ezztá sendo dezzenvolvida bzz"
 #
 # class CommandEvent:
 #     def __init__(self, bot: Bot, message):

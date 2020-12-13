@@ -60,7 +60,7 @@ class DaoNickname:
             print(e)
             self.close(conn)
 
-            return 0
+            return None
 
     def insert(self, discord_nick, game_nick):
         conn = None

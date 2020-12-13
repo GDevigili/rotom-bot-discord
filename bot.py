@@ -18,7 +18,7 @@ async def _hi(msg):
     await msg.channel.send(f"Olá {msg.author.mention}")
 
 
-@bot.command(name="set-nick", aliases=["setnick"])
+@bot.command(name="set-nick", aliases=["setnick", "set-nickname", "setnickname"])
 async def _set_nick(msg, game_nick=None):
     if game_nick:
         dao = DaoNickname()
@@ -31,6 +31,20 @@ async def _set_nick(msg, game_nick=None):
         await msg.channel.send(f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNick```")
 
 
+@bot.command(name="nick", aliases=["n", "nickname"])
+def get_nick(msg):
+    dao = DaoNickname()
+    nickname = dao.select_nickname(msg.author)
+    if nickname:
+        await msg.channel.send( f"```Nickname: {nickname}```")
+    else:
+        await error_msg("Nick não encontrado")
+
+
+def error_msg(error):
+    return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
+           f"```{error}```\n" \
+           f"Informe ao desenvolvedor para que ele possa ser resolvido"
 # --------------------------------
 # class MyClient(d.Client):
 #     async def on_ready(self):
