@@ -32,7 +32,7 @@ async def set_nick(msg, game_nick=None):
 
     if game_nick:
         dao = DaoNickname()
-        if dao.insert(msg.author, game_nick):
+        if dao.insert(msg.author.id, game_nick):
             await msg.channel.send(f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso! \n"
                                    f"Ou será que eu deveria te chamar de **{game_nick}** agora? ")
         else:
@@ -46,14 +46,12 @@ async def get_nick(msg, tagged_user=None):
     """
     Returns the nickname of the tagged discord user
     """
-    print(msg)
-    print(msg.content)
-    print(tagged_user)
     if tagged_user:
+        tagged_user = tagged_user[2:-1]
         dao = DaoNickname()
         nickname = dao.select_nickname(tagged_user)
         if nickname:
-            await msg.channel.send(f"```Nickname: {nickname}```")
+            await msg.channel.send(f"```Nickname: {nickname[0][0]}```")
         else:
             await msg.channel.send(("Nick não encontrado"))
     else:
