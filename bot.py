@@ -23,16 +23,16 @@ async def _set_nick(msg, game_nick=None):
     if game_nick:
         dao = DaoNickname()
         if dao.insert(msg.author, game_nick):
-            await msg.channel.send(f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso :)! \n"
+            await msg.channel.send(f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso! \n"
                                    f"Ou será que eu deveria te chamar de **{game_nick}** agora? ")
         else:
-            await msg.channel.send(f"Aconteceu o seguinte erro:\n```{self.error_message()}```\nPor favor, informe ")
+            await msg.channel.send(error_msg("Unknow Error"))
     else:
         await msg.channel.send(f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNick```")
 
 
 @bot.command(name="nick", aliases=["n", "nickname"])
-def get_nick(msg):
+async def get_nick(msg):
     dao = DaoNickname()
     nickname = dao.select_nickname(msg.author)
     if nickname:

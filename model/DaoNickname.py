@@ -106,7 +106,7 @@ class DaoNickname:
             select = cur.fetchall()
             self.close(conn)
 
-            return select
+            return select[0][0]
         except sqlite3.Error as e:
             print(e)
             self.close(conn)
