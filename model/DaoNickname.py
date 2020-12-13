@@ -17,7 +17,6 @@ class DaoNickname:
                 conn.close()
 
     # This function is only useful when creating a new database, so I have commented it
-    '''
     def create_table(self):
         conn = None
 
@@ -40,7 +39,6 @@ class DaoNickname:
             print(e)
             self.close(conn)
             return 0
-    '''
 
     def select_all(self):
         conn = None
@@ -120,6 +118,4 @@ class DaoNickname:
 
 if __name__ == '__main__':
     c = DaoNickname()
-    print(c.select_all())
-    print("--------")
-    print(c.select_nickname("Giraffes are Fake#5632"))
+    c.create_table()

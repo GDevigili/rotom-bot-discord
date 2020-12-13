@@ -87,7 +87,7 @@ async def check_in(msg):
 
 
 @bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
-def check_in_list(msg):
+async def check_in_list(msg):
     return check_lst
 
 def error_msg(error):
