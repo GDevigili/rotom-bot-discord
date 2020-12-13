@@ -3,7 +3,7 @@ import sqlite3
 
 class DaoNickname:
 
-    def __init__(self, db_file=r"databases/db_nicknames.db"):
+    def __init__(self, db_file=r"databases/db_nicknames.db."):
         conn = None
         self.db_file = db_file
 
@@ -106,7 +106,7 @@ class DaoNickname:
             select = cur.fetchall()
             self.close(conn)
 
-            return select[0][0]
+            return select
         except sqlite3.Error as e:
             print(e)
             self.close(conn)

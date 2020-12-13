@@ -12,14 +12,24 @@ bot = Bot(command_prefix="+")
 async def on_ready():
     print(f'Bot connected as {bot.user}')
 
+# ----- # ----- # ----- # ----- # ----- # ----- #
+# Compliment Functions
+
 
 @bot.command(name="oi", aliases=["olá", "ola", "bom dia", "boa tarde", "boa noite"])
-async def _hi(msg):
+async def hi(msg):
     await msg.channel.send(f"Olá {msg.author.mention}")
+
+# ----- # ----- # ----- # ----- # ----- # ----- #
+# Nickname Functions
 
 
 @bot.command(name="set-nick", aliases=["setnick", "set-nickname", "setnickname"])
-async def _set_nick(msg, game_nick=None):
+async def set_nick(msg, game_nick=None):
+    """
+    Sets a new game nickname for the discord user
+    """
+
     if game_nick:
         dao = DaoNickname()
         if dao.insert(msg.author, game_nick):
@@ -28,23 +38,42 @@ async def _set_nick(msg, game_nick=None):
         else:
             await msg.channel.send(error_msg("Unknow Error"))
     else:
-        await msg.channel.send(f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNick```")
+        await msg.channel.send(f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNickAqui```")
 
 
 @bot.command(name="nick", aliases=["n", "nickname"])
-async def get_nick(msg):
-    dao = DaoNickname()
-    nickname = dao.select_nickname(msg.author)
-    if nickname:
-        await msg.channel.send( f"```Nickname: {nickname}```")
+async def get_nick(msg, tagged_user=None):
+    """
+    Returns the nickname of the tagged discord user
+    """
+    print(msg)
+    print(msg.content)
+    print(tagged_user)
+    if tagged_user:
+        dao = DaoNickname()
+        nickname = dao.select_nickname(tagged_user)
+        if nickname:
+            await msg.channel.send(f"```Nickname: {nickname}```")
+        else:
+            await msg.channel.send(("Nick não encontrado"))
     else:
-        await error_msg("Nick não encontrado")
+        await msg.channel.send("Parece que você não marcou ninguém, use "
+                               "```+nick @SeuAmigoDoDiscord```"
+                               "para ver se eu consigo achar o nick dele")
+
+
+@bot.command(name="discord-nick", aliases=["discordnick", "discord"])
+async def get_dicord_nick(msg, nickname):
+    pass
 
 
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
-           f"```{error}```\n" \
+           f"```diff" \
+           f"- {error}" \
+           f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
+
 # --------------------------------
 # class MyClient(d.Client):
 #     async def on_ready(self):
