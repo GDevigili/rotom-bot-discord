@@ -38,7 +38,7 @@ async def set_nick(msg, game_nick=None):
             await msg.channel.send(f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso! \n"
                                    f"Ou será que eu deveria te chamar de **{game_nick}** agora? ")
         else:
-            await msg.channel.send(error_msg("Unknow Error"))
+            await msg.channel.send(error_msg("Unknown Error"))
     else:
         await msg.channel.send(
             f"Opzz, acho que não tem nenhum nick para eu registrar\n"
@@ -98,8 +98,8 @@ async def get_nick(msg, tagged_user=None):
 
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
-           f"```diff" \
-           f"- {error}" \
+           f"```" \
+           f"{error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
 

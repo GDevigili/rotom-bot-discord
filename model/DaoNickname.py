@@ -117,5 +117,5 @@ class DaoNickname:
 
 
 if __name__ == '__main__':
-    c = DaoNickname()
-    c.create_table()
+    dao = DaoNickname()
+    # dao.create_table()
