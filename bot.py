@@ -5,12 +5,13 @@ from discord.ext.commands import Bot
 from model.DaoNickname import DaoNickname
 
 TOKEN = my_app.get_bot_token()
-bot = Bot(command_prefix="+")
+bot = Bot(command_prefix="+", case_insensitive=True)
 
 
 @bot.event
 async def on_ready():
     print(f'Bot connected as {bot.user}')
+
 
 # ----- # ----- # ----- # ----- # ----- # ----- #
 # Compliment Functions
@@ -19,6 +20,7 @@ async def on_ready():
 @bot.command(name="oi", aliases=["olá", "ola", "bom dia", "boa tarde", "boa noite"])
 async def hi(msg):
     await msg.channel.send(f"Olá {msg.author.mention}")
+
 
 # ----- # ----- # ----- # ----- # ----- # ----- #
 # Nickname Functions
@@ -38,7 +40,8 @@ async def set_nick(msg, game_nick=None):
         else:
             await msg.channel.send(error_msg("Unknow Error"))
     else:
-        await msg.channel.send(f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNickAqui```")
+        await msg.channel.send(
+            f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNickAqui```")
 
 
 @bot.command(name="nick", aliases=["n", "nickname"])
@@ -65,12 +68,35 @@ async def get_dicord_nick(msg, nickname):
     pass
 
 
+# ----- # ----- # ----- # ----- # ----- # ----- #
+# Check-in Functions
+
+check_lst = []
+
+
+@bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
+async def check_in_start():
+    global check_lst
+    check_lst = []
+
+
+@bot.command(name="check-in", aliases=["checkin"])
+async def check_in(msg):
+    check_lst.append(msg.author.id)
+    await msg.channel.send()
+
+
+@bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
+def check_in_list(msg):
+    return check_lst
+
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
            f"```diff" \
            f"- {error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
+
 
 # --------------------------------
 # class MyClient(d.Client):
