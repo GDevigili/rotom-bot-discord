@@ -41,7 +41,9 @@ async def set_nick(msg, game_nick=None):
             await msg.channel.send(error_msg("Unknow Error"))
     else:
         await msg.channel.send(
-            f"Opzz, acho que não tem nenhum nick para eu registrar\nTente usar\n```+nick SeuNickAqui```")
+            f"Opzz, acho que não tem nenhum nick para eu registrar\n"
+            f"Tente usar\n"
+            f"```+setnick SeuNickAqui```")
 
 
 @bot.command(name="nick", aliases=["n", "nickname"])
@@ -50,7 +52,11 @@ async def get_nick(msg, tagged_user=None):
     Returns the nickname of the tagged discord user
     """
     if tagged_user:
-        tagged_user = tagged_user[2:-1]
+        print(tagged_user)
+        aux = [char for char in tagged_user if char.isdigit()]
+        print(aux)
+        tagged_user = "".join(map(str, aux))
+        print(tagged_user)
         dao = DaoNickname()
         nickname = dao.select_nickname(tagged_user)
         if nickname:
@@ -63,32 +69,32 @@ async def get_nick(msg, tagged_user=None):
                                "para ver se eu consigo achar o nick dele")
 
 
-@bot.command(name="discord-nick", aliases=["discordnick", "discord"])
-async def get_dicord_nick(msg, nickname):
-    pass
+# @bot.command(name="discord-nick", aliases=["discordnick", "discord"])
+# async def get_dicord_nick(msg, nickname):
+#     pass
 
 
 # ----- # ----- # ----- # ----- # ----- # ----- #
 # Check-in Functions
 
-check_lst = []
-
-
-@bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
-async def check_in_start():
-    global check_lst
-    check_lst = []
-
-
-@bot.command(name="check-in", aliases=["checkin"])
-async def check_in(msg):
-    check_lst.append(msg.author.id)
-    await msg.channel.send()
-
-
-@bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
-async def check_in_list(msg):
-    return check_lst
+# check_lst = []
+#
+#
+# @bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
+# async def check_in_start():
+#     global check_lst
+#     check_lst = []
+#
+#
+# @bot.command(name="check-in", aliases=["checkin"])
+# async def check_in(msg):
+#     check_lst.append(msg.author.id)
+#     await msg.channel.send()
+#
+#
+# @bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
+# async def check_in_list(msg):
+#     return check_lst
 
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
