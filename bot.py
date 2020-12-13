@@ -13,14 +13,12 @@ async def on_ready():
     print(f'Bot connected as {bot.user}')
 
 
-@bot.event
-async def on_message(message):
-    if str(message.content)[0] == bot.command_prefix:
-        ce = CommandEvent(bot, message)
-        await message.channel.send(ce.verify_message())
+@bot.command(name="oi", aliases=["olá", "ola"])
+async def _hi(msg):
+    await msg.channel.send(f"Olá {msg.author.mention}")
 
+    
 # --------------------------------
-
 # class MyClient(d.Client):
 #     async def on_ready(self):
 #         print('Logged on as {0}!'.format(self.user))
