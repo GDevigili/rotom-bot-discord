@@ -62,39 +62,49 @@ async def get_nick(msg, tagged_user=None):
         if nickname:
             await msg.channel.send(f"```Nickname: {nickname[0][0]}```")
         else:
-            await msg.channel.send(("Nick não encontrado"))
+            await msg.channel.send("Nick não encontrado")
     else:
         await msg.channel.send("Parece que você não marcou ninguém, use "
                                "```+nick @SeuAmigoDoDiscord```"
                                "para ver se eu consigo achar o nick dele")
 
 
-# @bot.command(name="discord-nick", aliases=["discordnick", "discord"])
-# async def get_dicord_nick(msg, nickname):
-#     pass
+@bot.command(name="discord-nick", aliases=["discordnick", "discord"])
+async def get_discord_nick(msg, nickname):
+    pass
 
 
 # ----- # ----- # ----- # ----- # ----- # ----- #
 # Check-in Functions
 
-# check_lst = []
-#
-#
-# @bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
-# async def check_in_start():
-#     global check_lst
-#     check_lst = []
-#
-#
-# @bot.command(name="check-in", aliases=["checkin"])
-# async def check_in(msg):
-#     check_lst.append(msg.author.id)
-#     await msg.channel.send()
-#
-#
-# @bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
-# async def check_in_list(msg):
-#     return check_lst
+check_lst = []
+
+
+@bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
+async def check_in_start():
+    global check_lst
+    check_lst = []
+
+
+@bot.command(name="check-in", aliases=["checkin"])
+async def check_in(msg):
+    check_lst.append(msg.author)
+    if msg.author in check_lst:
+        await msg.channel.send("Check-in realizado com sucesso")
+    else:
+        await msg.channel.send(error_msg("Check-in não realizado"))
+
+
+@bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
+async def check_in_list(msg, mention=False):
+    check_str = "Jogadores que realizaram o check-in:\n"
+    for player in check_lst:
+        if mention:
+            check_str += f"> {player.mention}\n"
+        else:
+            check_str += f"> {player}\n"
+    await msg.channel.send(check_str)
+
 
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
