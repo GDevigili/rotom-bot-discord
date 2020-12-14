@@ -78,21 +78,31 @@ async def get_discord_nick(msg, nickname):
 # Check-in Functions
 
 check_lst = []
+check_in_status = False
 
 
 @bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
-async def check_in_start():
+async def check_in_start(ctx):
     global check_lst
     check_lst = []
+    global check_in_status
+    check_in_status = True
+    await ctx.channel.send("O check-in está aberto")
 
 
 @bot.command(name="check-in", aliases=["checkin"])
 async def check_in(msg):
-    check_lst.append(msg.author)
-    if msg.author in check_lst:
-        await msg.channel.send("Check-in realizado com sucesso")
+    if check_in_status:
+        if msg.author not in check_lst:
+            check_lst.append(msg.author)
+            if msg.author in check_lst:
+                await msg.channel.send("Check-in realizado com sucesso")
+            else:
+                await msg.channel.send(error_msg("Check-in não realizado"))
+        else:
+            await msg.channel.send("Check-in já realizado")
     else:
-        await msg.channel.send(error_msg("Check-in não realizado"))
+        await msg.channel.send("O check-in não está aberto")
 
 
 @bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
@@ -102,7 +112,7 @@ async def check_in_list(msg, mention=False):
         if mention:
             check_str += f"> {player.mention}\n"
         else:
-            check_str += f"> {player}\n"
+            check_str += f"> {player    }\n"
     await msg.channel.send(check_str)
 
 
