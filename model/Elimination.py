@@ -1,25 +1,26 @@
 from random import randint
 
+
 class Elimination:
     def __init__(self, players: list):
         self.players = players
         self.active = players
+        self.matches = self.generate_bracket()
 
-    # def set_players(self, players_list: list):
-    #     power = 0
-    #     while len(players_list) > 2**power:
-    #     while len(players_list) > 2**power:
-    #         power += 1
-    #
-    #     for i in range(2**power - len(players_list)):
-    #         players_list.append("BYE")
-    #         self.players = players_list
+    def get_players(self):
+        return self.players
+
+    def get_active_players(self):
+        return self.active
+
+    def get_matches(self):
+        return self.matches
 
     def add_player(self, player):
         self._players.append(player)
 
     def drop_player(self, player):
-        self._players.remove(player)
+        self._active.remove(player)
 
     def generate_bracket(self):
         power = 0
