@@ -137,17 +137,18 @@ para participar, digite `+me` aqui em baixo para entrar na lista do sorteio
 @bot.command(name="me")
 async def giveaway_register(ctx):
     global giveaway_list
-    giveaway_list.append(ctx.author)
-
+    if ctx.author not in giveaway_list:
+        giveaway_list.append(ctx.author)
+        await ctx.channel.send(f"{ctx.author.mention} você foi registrado com sucesso! \nBoa sorte!")
+    else:
+        await ctx.channel.send(f"Parece que você já está registrado. Boa sorte!")
 
 @bot.command(name="giveaway")
 async def giveaway(ctx, number=1):
     for i in range(number):
         global giveaway_list
         winner = giveaway_list[randint(0, len(giveaway_list) - 1)]
-        await ctx.channel.send(f"Parabéns {winner}, você foi sorteado!")
-
-
+        await ctx.channel.send(f"Parabéns {winner}, você foi sorteado, fale com o criador do sorteio para resgatar o prêmio!")
 
 
 def error_msg(error):
