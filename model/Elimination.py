@@ -3,43 +3,78 @@ from random import randint
 
 class Elimination:
     def __init__(self, players: list):
+        """
+        The init function of the single elimination tournament
+        :param players: a list with all the players of the tournament.
+        """
         self.players = players
         self.active = players
         self.matches = self.generate_bracket()
 
     def get_players(self):
+        """
+        Returns the list with all players.
+        """
         return self.players
 
     def get_active_players(self):
+        """
+        Returns a list with the players that are still in the tournament (active players).
+        """
         return self.active
 
     def get_matches(self):
+        """
+        Returns a list with all the matches of the round.
+        """
         return self.matches
 
-    def add_player(self, player):
-        self._players.append(player)
+    def add_player(self, player):  # seria uma boa ideia limitar o tipo de entrada para o objeto correto
+        """
+        Adds a player in the players list
+        :param player: The player who will be added
+        """
+        self.players.append(player)
 
     def drop_player(self, player):
-        self._active.remove(player)
+        """
+        Removes a player from the active players list
+        :param player: The player who will be removed
+        """
+        self.active.remove(player)
 
     def generate_bracket(self):
+        """
+        Generates a single elimination bracket with the active players
+        """
+        aux_players = self.active
         power = 0
-        while len(self.players) > 2**power:
+        while len(self.active) > 2**power:
             power += 1
-        bracket_size = 2**power
+        bracket_size = 2**power  # --> (1)
+
         blue_side = []
-        aux_players = self.players
         for i in range(int(bracket_size/2)):
-            p = aux_players.pop(randint(0, len(aux_players) - 1))
+            p = aux_players.pop(randint(0, len(aux_players) - 1))  # --> (2)
             blue_side.append(p)
+
         red_side = []
         for i in range(len(aux_players)):
-            p = aux_players.pop(randint(0, len(aux_players) - 1))
+            p = aux_players.pop(randint(0, len(aux_players) - 1))  # -->(3)
             red_side.append(p)
-        for i in range(int(bracket_size/2) - len(red_side)):
+
+        for i in range(int(bracket_size/2) - len(red_side)):  # -->(4)
             red_side.append("BYE")
-        matches = [blue_side[i] + " X " + red_side[i] for i in range(len(blue_side))]
+
+        matches = [blue_side[i] + " X " + red_side[i] for i in range(len(blue_side))]  # -->(5)
         return matches
+
+        # (1)--> Calculates the nearest power of two bigger than the number of players
+        # (2)--> Selects half of the bracket size to be the "blue side" of the matches
+        # (3)--> Selects the remaining players to be the "red side" of the matches
+        # (4)--> Fills the red size with BYEs until the length of red_side is equal to half of the bracket size
+        # (5)--> Pairs up the blue and red sides to make the matches
+
 
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
