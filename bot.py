@@ -97,11 +97,11 @@ async def check_in(ctx):
         if ctx.author not in check_lst:
             check_lst.append(ctx.author)
             if ctx.author in check_lst:
-                await ctx.channel.send("Check-in realizado com sucesso")
+                await ctx.channel.send(f"{ctx.author.mention}, seu check-in foi realizado com sucesso")
             else:
                 await ctx.channel.send(error_msg("Check-in não realizado"))
         else:
-            await ctx.channel.send("Check-in já realizado")
+            await ctx.channel.send(f"{ctx.author.mention}, seu check-in já foi realizado")
     else:
         await ctx.channel.send("O check-in não está aberto")
 
