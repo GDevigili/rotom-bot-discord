@@ -3,6 +3,7 @@ import private.app_data as my_app
 from discord.ext.commands import Bot
 # from model.CommandEvent import CommandEvent
 from model.DaoNickname import DaoNickname
+from random import randint
 
 TOKEN = my_app.get_bot_token()
 bot = Bot(command_prefix="+", case_insensitive=True)
@@ -18,8 +19,8 @@ async def on_ready():
 
 
 @bot.command(name="oi", aliases=["olá", "ola", "bom dia", "boa tarde", "boa noite"])
-async def hi(msg):
-    await msg.channel.send(f"Olá {msg.author.mention}")
+async def hi(ctx):
+    await ctx.channel.send(f"Olá {ctx.author.mention}")
 
 
 # ----- # ----- # ----- # ----- # ----- # ----- #
@@ -27,27 +28,27 @@ async def hi(msg):
 
 
 @bot.command(name="set-nick", aliases=["setnick", "set-nickname", "setnickname"])
-async def set_nick(msg, game_nick=None):
+async def set_nick(ctx, game_nick=None):
     """
     Sets a new game nickname for the discord user
     """
 
     if game_nick:
         dao = DaoNickname()
-        if dao.insert(msg.author.id, game_nick):
-            await msg.channel.send(f"{str(str(msg.author.mention))} seu nick foi regizztrado com sucesso! \n"
+        if dao.insert(ctx.author.id, game_nick):
+            await ctx.channel.send(f"{str(str(ctx.author.mention))} seu nick foi regizztrado com sucesso! \n"
                                    f"Ou será que eu deveria te chamar de **{game_nick}** agora? ")
         else:
-            await msg.channel.send(error_msg("Unknown Error"))
+            await ctx.channel.send(error_msg("Unknown Error"))
     else:
-        await msg.channel.send(
+        await ctx.channel.send(
             f"Opzz, acho que não tem nenhum nick para eu registrar\n"
             f"Tente usar\n"
             f"```+setnick SeuNickAqui```")
 
 
 @bot.command(name="nick", aliases=["n", "nickname"])
-async def get_nick(msg, tagged_user=None):
+async def get_nick(ctx, tagged_user=None):
     """
     Returns the nickname of the tagged discord user
     """
@@ -60,17 +61,17 @@ async def get_nick(msg, tagged_user=None):
         dao = DaoNickname()
         nickname = dao.select_nickname(tagged_user)
         if nickname:
-            await msg.channel.send(f"```Nickname: {nickname[0][0]}```")
+            await ctx.channel.send(f"```Nickname: {nickname[0][0]}```")
         else:
-            await msg.channel.send("Nick não encontrado")
+            await ctx.channel.send("Nick não encontrado")
     else:
-        await msg.channel.send("Parece que você não marcou ninguém, use "
+        await ctx.channel.send("Parece que você não marcou ninguém, use "
                                "```+nick @SeuAmigoDoDiscord```"
                                "para ver se eu consigo achar o nick dele")
 
 
 @bot.command(name="discord-nick", aliases=["discordnick", "discord"])
-async def get_discord_nick(msg, nickname):
+async def get_discord_nick(ctx, nickname):
     pass
 
 
@@ -91,29 +92,62 @@ async def check_in_start(ctx):
 
 
 @bot.command(name="check-in", aliases=["checkin"])
-async def check_in(msg):
+async def check_in(ctx):
     if check_in_status:
-        if msg.author not in check_lst:
-            check_lst.append(msg.author)
-            if msg.author in check_lst:
-                await msg.channel.send("Check-in realizado com sucesso")
+        if ctx.author not in check_lst:
+            check_lst.append(ctx.author)
+            if ctx.author in check_lst:
+                await ctx.channel.send("Check-in realizado com sucesso")
             else:
-                await msg.channel.send(error_msg("Check-in não realizado"))
+                await ctx.channel.send(error_msg("Check-in não realizado"))
         else:
-            await msg.channel.send("Check-in já realizado")
+            await ctx.channel.send("Check-in já realizado")
     else:
-        await msg.channel.send("O check-in não está aberto")
+        await ctx.channel.send("O check-in não está aberto")
 
 
 @bot.command(name="check-in-list", aliases=["checkin-list", "check-list", "checklist", "clist"])
-async def check_in_list(msg, mention=False):
+async def check_in_list(ctx, mention=False):
     check_str = "Jogadores que realizaram o check-in:\n"
     for player in check_lst:
         if mention:
             check_str += f"> {player.mention}\n"
         else:
             check_str += f"> {player    }\n"
-    await msg.channel.send(check_str)
+    await ctx.channel.send(check_str)
+
+
+# ----- # ----- # ----- # ----- # ----- # ----- #
+# Giveaway Functions
+giveaway_list = []
+giveaway_status = False
+
+@bot.command(name="giveaway-start", aliases=["start-giveaway"])
+async def giveaway_start(ctx, prize = None):
+    if prize:
+        await ctx.channel.send(f"""
+É hora do Roto Loto :)        
+e vamos sortear um {prize}!!!
+para participar, digite `+me` aqui em baixo para entrar na lista do sorteio
+        """)
+        global giveaway_status
+        giveaway_status = True
+
+
+@bot.command(name="me")
+async def giveaway_register(ctx):
+    global giveaway_list
+    giveaway_list.append(ctx.author)
+
+
+@bot.command(name="giveaway")
+async def giveaway(ctx, number=1):
+    for i in range(number):
+        global giveaway_list
+        winner = giveaway_list[randint(0, len(giveaway_list) - 1)]
+        await ctx.channel.send(f"Parabéns {winner}, você foi sorteado!")
+
+
 
 
 def error_msg(error):
@@ -122,6 +156,8 @@ def error_msg(error):
            f"{error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
+
+
 
 
 # --------------------------------
