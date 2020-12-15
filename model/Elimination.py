@@ -29,12 +29,16 @@ class Elimination:
         blue_side = []
         aux_players = self.players
         for i in range(int(bracket_size/2)):
-            print(len(aux_players))
-            p = aux_players.pop(randint(0, len(aux_players)))
+            p = aux_players.pop(randint(0, len(aux_players) - 1))
             blue_side.append(p)
-        return blue_side
-
-
+        red_side = []
+        for i in range(len(aux_players)):
+            p = aux_players.pop(randint(0, len(aux_players) - 1))
+            red_side.append(p)
+        for i in range(int(bracket_size/2) - len(red_side)):
+            red_side.append("BYE")
+        matches = [blue_side[i] + " X " + red_side[i] for i in range(len(blue_side))]
+        return matches
 
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
