@@ -1,10 +1,13 @@
 # Discord API imports
+# from itertools import chain
+
 import discord as d
 from discord.ext.commands import Bot
 
 # Project imports
 import private.app_data as my_app
 from model.DaoNickname import DaoNickname
+from model.Elimination import Elimination
 
 # Other imports
 from random import randint
@@ -22,7 +25,7 @@ async def on_ready():
     print(f'Bot connected as {bot.user}')
 
 
-# ----- # ----- # ----- # ----- # ----- # ----- #
+# ----------------------------------------------------------------------------------------------------------------------
 # Compliment Functions
 
 
@@ -34,7 +37,7 @@ async def hi(ctx):
     await ctx.channel.send(f"Olá {ctx.author.mention}")
 
 
-# ----- # ----- # ----- # ----- # ----- # ----- #
+# ----------------------------------------------------------------------------------------------------------------------
 # Nickname Functions
 
 
@@ -89,7 +92,7 @@ async def get_discord_nick(ctx, nickname):
     pass
 
 
-# ----- # ----- # ----- # ----- # ----- # ----- #
+# ----------------------------------------------------------------------------------------------------------------------
 # Check-in Functions
 
 check_lst = []
@@ -145,7 +148,7 @@ async def check_in_list(ctx, mention=False):
     await ctx.channel.send(check_str)
 
 
-# ----- # ----- # ----- # ----- # ----- # ----- #
+# ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
 giveaway_list = []
 giveaway_status = False
@@ -178,8 +181,21 @@ async def giveaway(ctx, number=1):
     for i in range(number):
         global giveaway_list
         winner = giveaway_list[randint(0, len(giveaway_list) - 1)]
-        await ctx.channel.send(f"Parabéns {winner}, você foi sorteado, "
+        await ctx.channel.send(f"Parabéns {winner.mention}, você foi sorteado, "
                                f"fale com o criador do sorteio para resgatar o prêmio!")
+        global giveaway_status
+        giveaway_status = False
+        giveaway_list = []
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Tournament Functions
+
+@bot.command(name="start-tournament")
+async def start_elimination(ctx, type:str="elimination"):
+    global check_lst
+    if type.lower() == "elimination":
+        tournament = Elimination(check_lst)
+        await ctx.channel.send("E o torneio está prestes a começar, as partidas serão:\n")
 
 
 def error_msg(error):
