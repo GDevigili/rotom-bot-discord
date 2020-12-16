@@ -2,13 +2,13 @@ from random import randint
 
 
 class Elimination:
-    def __init__(self, players: list):
+    def __init__(self, players:list):
         """
         The init function of the single elimination tournament
         :param players: a list with all the players of the tournament.
         """
-        self.players = players
-        self.active = players
+        self.players = players.copy()
+        self.active = players.copy()
         self.matches = self.generate_bracket()
 
     def get_players(self):
@@ -47,11 +47,12 @@ class Elimination:
         """
         Generates a single elimination bracket with the active players
         """
-        aux_players = self.active
+        aux_players = self.active.copy()
         power = 0
         while len(self.active) > 2**power:
             power += 1
         bracket_size = 2**power  # --> (1)
+        print(bracket_size)
 
         blue_side = []
         for i in range(int(bracket_size/2)):
@@ -79,5 +80,6 @@ class Elimination:
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
     e = Elimination(players)
-    # print(e.players)
+    print(e.players)
+    print(e.active)
     print(e.generate_bracket())
