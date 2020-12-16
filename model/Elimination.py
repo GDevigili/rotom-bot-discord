@@ -1,5 +1,5 @@
 from random import randint
-
+from discord import User
 
 class Elimination:
     def __init__(self, players:list):
@@ -28,6 +28,27 @@ class Elimination:
         Returns a list with all the matches of the round.
         """
         return self.matches
+
+    def matches_to_string(self, mention=False):
+        """
+        Returns a String with the matches.
+        """
+        matches_str = "As partidas da rodada são:\n"
+        for match in self.matches:
+            if type(match[0]) == User and mention:
+                matches_str += f"{match[0].mention}"
+            else:
+                matches_str += f"{match[0]}"
+
+            matches_str += " VS. "
+
+            if type(match) == User and mention:
+                matches_str += f"{match[1].mention}"
+            else:
+                matches_str += f"{match[1]}"
+            matches_str += "\n"
+
+        return matches_str
 
     def add_player(self, player):  # seria uma boa ideia limitar o tipo de entrada para o objeto correto
         """
@@ -67,7 +88,7 @@ class Elimination:
         for i in range(int(bracket_size/2) - len(red_side)):  # -->(4)
             red_side.append("BYE")
 
-        matches = [blue_side[i] + " X " + red_side[i] for i in range(len(blue_side))]  # -->(5)
+        matches = [[blue_side[i], red_side[i]] for i in range(len(blue_side))]  # -->(5)
         return matches
 
         # (1)--> Calculates the nearest power of two bigger than the number of players
@@ -82,4 +103,5 @@ if __name__ == '__main__':
     e = Elimination(players)
     print(e.players)
     print(e.active)
-    print(e.generate_bracket())
+    print(e.matches)
+    print(e.matches_to_string())
