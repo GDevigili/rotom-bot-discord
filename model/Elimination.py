@@ -1,8 +1,9 @@
 from random import randint
-from discord import User
+from discord.member import Member
+
 
 class Elimination:
-    def __init__(self, players:list):
+    def __init__(self, players: list):
         """
         The init function of the single elimination tournament
         :param players: a list with all the players of the tournament.
@@ -35,14 +36,14 @@ class Elimination:
         """
         matches_str = "As partidas da rodada são:\n"
         for match in self.matches:
-            if type(match[0]) == User and mention:
-                matches_str += f"{match[0].mention}"
+            if type(match[0]) == Member and mention:
+                matches_str += f"> {match[0].mention}"
             else:
-                matches_str += f"{match[0]}"
+                matches_str += f"> {match[0]}"
 
             matches_str += " VS. "
 
-            if type(match) == User and mention:
+            if type(match[1]) == Member and mention:
                 matches_str += f"{match[1].mention}"
             else:
                 matches_str += f"{match[1]}"
@@ -73,7 +74,6 @@ class Elimination:
         while len(self.active) > 2**power:
             power += 1
         bracket_size = 2**power  # --> (1)
-        print(bracket_size)
 
         blue_side = []
         for i in range(int(bracket_size/2)):
@@ -101,7 +101,4 @@ class Elimination:
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
     e = Elimination(players)
-    print(e.players)
-    print(e.active)
-    print(e.matches)
     print(e.matches_to_string())

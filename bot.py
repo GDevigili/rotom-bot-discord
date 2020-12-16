@@ -190,12 +190,13 @@ async def giveaway(ctx, number=1):
 # ----------------------------------------------------------------------------------------------------------------------
 # Tournament Functions
 
-@bot.command(name="start-tournament")
-async def start_elimination(ctx, type:str="elimination"):
+
+@bot.command(name="start-tournament", aliases=["tournament-start"])
+async def start_tournament(ctx, type:str="elimination"):
     global check_lst
     if type.lower() == "elimination":
         tournament = Elimination(check_lst)
-        await ctx.channel.send("E o torneio está prestes a começar, as partidas serão:\n")
+        await ctx.channel.send(tournament.matches_to_string(True))
 
 
 def error_msg(error):
