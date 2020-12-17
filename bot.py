@@ -3,6 +3,7 @@
 
 import discord as d
 from discord.ext.commands import Bot
+from discord.ext import commands
 
 # Project imports
 import private.app_data as my_app
@@ -15,6 +16,8 @@ from random import randint
 
 TOKEN = my_app.get_bot_token()
 bot = Bot(command_prefix="+", case_insensitive=True)
+
+admin_role = 'Kahuna'
 
 
 @bot.event
@@ -100,6 +103,7 @@ check_in_status = False
 
 
 @bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
+@commands.has_any_role(admin_role)
 async def check_in_start(ctx):
     f"""
     Starts the check-in of a tournament.
@@ -192,6 +196,7 @@ async def giveaway(ctx, number=1):
 
 
 @bot.command(name="start-tournament", aliases=["tournament-start"])
+@commands.has_any_role(admin_role)
 async def start_tournament(ctx, type:str="elimination"):
     global check_lst
     if type.lower() == "elimination":
