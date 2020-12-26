@@ -27,10 +27,14 @@ async def on_ready():
     """
     print(f'Bot connected as {bot.user}')
 
+
+"""
 @bot.event
 async def on_message(message):
     if str(message.author.id) == "635629811993411594" or "<@!635629811993411594>" in message.content:
         await message.add_reaction("<:CorvoBan:782690759522123816>")
+"""
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compliment Functions
