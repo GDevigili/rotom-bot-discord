@@ -27,6 +27,10 @@ async def on_ready():
     """
     print(f'Bot connected as {bot.user}')
 
+@bot.event
+async def on_message(message):
+    if str(message.author.id) == "635629811993411594" or "<@!635629811993411594>" in message.content:
+        await message.add_reaction("<:CorvoBan:782690759522123816>")
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compliment Functions
@@ -156,6 +160,7 @@ async def check_in_list(ctx, mention=False):
 # Giveaway Functions
 giveaway_list = []
 giveaway_status = False
+giveaway_channel = ''
 
 
 @bot.command(name="giveaway-start", aliases=["start-giveaway"])
@@ -210,6 +215,8 @@ def error_msg(error):
            f"{error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
+
+
 
 
 bot.run(TOKEN)
