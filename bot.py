@@ -27,7 +27,6 @@ async def on_ready():
     """
     print(f'Bot connected as {bot.user}')
 
-
 """
 @bot.event
 async def on_message(message):
@@ -35,6 +34,18 @@ async def on_message(message):
         await message.add_reaction("<:CorvoBan:782690759522123816>")
 """
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Help Function
+
+
+@bot.command(name="help", aliases=["h", "ajuda"])
+async def help(ctx, command=None):
+    command_help_list = ["check-in"]
+    if command is None:
+        await ctx.channel.send("Informe o comando do qual você quer ajuda")
+        return 0
+    if command == "report":
+        pass
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compliment Functions
@@ -159,6 +170,24 @@ async def check_in_list(ctx, mention=False):
             check_str += f"> {player}\n"
     await ctx.channel.send(check_str)
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Tournament Functions
+
+
+@bot.command(name="start-tournament", aliases=["tournament-start"])
+@commands.has_any_role(admin_role)
+async def start_tournament(ctx, type:str="elimination"):
+    global check_lst
+    if type.lower() == "elimination":
+        tournament = Elimination(check_lst)
+        await ctx.channel.send(tournament.matches_to_string(True))
+
+
+@bot.command(name="report")
+def report_score(ctx, player = None, result="win"):
+    pass
+
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
@@ -200,18 +229,8 @@ async def giveaway(ctx, number=1):
         giveaway_status = False
         giveaway_list = []
 
+
 # ----------------------------------------------------------------------------------------------------------------------
-# Tournament Functions
-
-
-@bot.command(name="start-tournament", aliases=["tournament-start"])
-@commands.has_any_role(admin_role)
-async def start_tournament(ctx, type:str="elimination"):
-    global check_lst
-    if type.lower() == "elimination":
-        tournament = Elimination(check_lst)
-        await ctx.channel.send(tournament.matches_to_string(True))
-
 
 def error_msg(error):
     return f"Parece que aconteceu o seguinte erro ao realizar esta ação:\n" \
@@ -219,8 +238,5 @@ def error_msg(error):
            f"{error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
-
-
-
 
 bot.run(TOKEN)
