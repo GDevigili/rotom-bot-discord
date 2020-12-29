@@ -14,25 +14,25 @@ class Elimination:
 
     def get_players(self):
         """
-        Returns the list with all players.
+        Return the list with all players.
         """
         return self.players
 
     def get_active_players(self):
         """
-        Returns a list with the players that are still in the tournament (active players).
+        Return a list with the players that are still in the tournament (active players).
         """
         return self.active
 
     def get_matches(self):
         """
-        Returns a list with all the matches of the round.
+        Return a list with all the matches of the round.
         """
         return self.matches
 
     def matches_to_string(self, mention=False):
         """
-        Returns a String with the matches.
+        Return a String with the matches.
         """
         matches_str = "As partidas da rodada são:\n"
         for match in self.matches:
@@ -53,21 +53,28 @@ class Elimination:
 
     def add_player(self, player):  # seria uma boa ideia limitar o tipo de entrada para o objeto correto
         """
-        Adds a player in the players list
+        Add a player in the players list
         :param player: The player who will be added
         """
         self.players.append(player)
 
     def drop_player(self, player):
         """
-        Removes a player from the active players list
+        Drop a player from the tournament
+        :param player: The player who will be removed
+        """
+        self.players.remove(player)
+
+    def eliminate(self, player):
+        """
+        Eliminate a player from de tounament
         :param player: The player who will be removed
         """
         self.active.remove(player)
 
     def generate_bracket(self):
         """
-        Generates a single elimination bracket with the active players
+        Generate a single elimination bracket with the active players
         """
         aux_players = self.active.copy()
         power = 0
