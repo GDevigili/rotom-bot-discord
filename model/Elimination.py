@@ -101,9 +101,15 @@ if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
     e = Elimination(players)
     print(e.matches_to_string())
-    print(e.active)
+
     e.eliminate('p3')
     e.eliminate('p4')
+    print(e.active)
+    e.generate_bracket()
+    print(e.matches_to_string())
+
+    e.eliminate('p1')
+    e.eliminate('p2')
     print(e.active)
     e.generate_bracket()
     print(e.matches_to_string())
