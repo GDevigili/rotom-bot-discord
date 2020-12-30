@@ -173,20 +173,27 @@ async def check_in_list(ctx, mention=False):
 # ----------------------------------------------------------------------------------------------------------------------
 # Tournament Functions
 
+tournament = Elimination([])
+
 
 @bot.command(name="start-tournament", aliases=["tournament-start"])
 @commands.has_any_role(admin_role)
 async def start_tournament(ctx, type:str="elimination"):
     global check_lst
     if type.lower() == "elimination":
+        global tournament
         tournament = Elimination(check_lst)
         await ctx.channel.send(tournament.matches_to_string(True))
 
 
 @bot.command(name="report")
-def report_score(ctx, player = None, result="win"):
-    pass
-
+async def report_score(ctx, result=None):
+    if str(result).lower() not in ["win", "loss"]:
+        await ctx.channel.send(f"Parece que você usou errado este comando.\n"
+                               f"Tente usar `{bot.command_prefix}report win` se você venceu ou "
+                               f"`{bot.command_prefix}report loss` se você perdeu")
+    else:
+        pass
 
 
 # ----------------------------------------------------------------------------------------------------------------------
