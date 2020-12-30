@@ -14,9 +14,9 @@ class Match:
 
     def __str__(self, mention):
         if type(self.players[0]) == Member and mention:
-            match_str = f"> {self.players[0].mention}"
+            match_str = f"{self.players[0].mention}"
         else:
-            match_str = f"> {self.players[0]}"
+            match_str = f"{self.players[0]}"
 
         match_str += " VS. "
 
