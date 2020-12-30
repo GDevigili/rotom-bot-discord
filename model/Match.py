@@ -12,7 +12,7 @@ class Match:
     def set_winner(self, player):
         self.winner = player
 
-    def __str__(self, mention):
+    def to_string(self, mention=False):
         if type(self.players[0]) == Member and mention:
             match_str = f"{self.players[0].mention}"
         else:

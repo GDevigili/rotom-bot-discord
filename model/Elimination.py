@@ -1,5 +1,6 @@
 from random import randint
 from discord.member import Member
+from Match import Match
 
 
 class Elimination:
@@ -36,22 +37,10 @@ class Elimination:
         """
         matches_str = "As partidas da rodada são:\n"
         for match in self.matches:
-            if type(match[0]) == Member and mention:
-                matches_str += f"> {match[0].mention}"
-            else:
-                matches_str += f"> {match[0]}"
-
-            matches_str += " VS. "
-
-            if type(match[1]) == Member and mention:
-                matches_str += f"{match[1].mention}"
-            else:
-                matches_str += f"{match[1]}"
-            matches_str += "\n"
-
+            matches_str += f"> {match.to_string()} \n"
         return matches_str
 
-    def add_player(self, player):  # seria uma boa ideia limitar o tipo de entrada para o objeto correto
+    def add_player(self, player: Member):
         """
         Add a player in the players list
         :param player: The player who will be added
@@ -67,7 +56,7 @@ class Elimination:
 
     def eliminate(self, player):
         """
-        Eliminate a player from de tounament
+        Eliminate a player from de tournament
         :param player: The player who will be removed
         """
         self.active.remove(player)
@@ -95,7 +84,8 @@ class Elimination:
         for i in range(int(bracket_size/2) - len(red_side)):  # -->(4)
             red_side.append("BYE")
 
-        matches = [[blue_side[i], red_side[i]] for i in range(len(blue_side))]  # -->(5)
+        matches = [Match(blue_side[i], red_side[i]) for i in range(len(blue_side))]  # -->(5)
+
         return matches
 
         # (1)--> Calculates the nearest power of two bigger than the number of players
@@ -108,4 +98,5 @@ class Elimination:
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
     e = Elimination(players)
+    print([match.to_string() for match in e.matches])
     print(e.matches_to_string())
