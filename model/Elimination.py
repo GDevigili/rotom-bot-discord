@@ -36,8 +36,10 @@ class Elimination:
         Return a String with the matches.
         """
         matches_str = "As partidas da rodada são:\n"
+        cont = 0
         for match in self.matches:
-            matches_str += f"> {match.to_string()} \n"
+            cont += 1
+            matches_str += f"> ID: {cont} | {match.to_string()} \n"
         return matches_str
 
     def add_player(self, player: Member):
@@ -60,6 +62,9 @@ class Elimination:
         :param player: The player who will be removed
         """
         self.active.remove(player)
+
+    def report(self, match_id, loser):
+        pass
 
     def generate_bracket(self):
         """
@@ -98,5 +103,5 @@ class Elimination:
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
     e = Elimination(players)
-    print([match.to_string() for match in e.matches])
     print(e.matches_to_string())
+    print(e.active)
