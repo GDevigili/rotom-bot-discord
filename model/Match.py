@@ -11,3 +11,18 @@ class Match:
 
     def set_winner(self, player):
         self.winner = player
+
+    def __str__(self, mention):
+        if type(self.players[0]) == Member and mention:
+            match_str = f"> {self.players[0].mention}"
+        else:
+            match_str = f"> {self.players[0]}"
+
+        match_str += " VS. "
+
+        if type(self.players[1]) == Member and mention:
+            match_str += f"{self.players[1].mention}"
+        else:
+            match_str += f"{self.players[1]}"
+
+        return match_str
