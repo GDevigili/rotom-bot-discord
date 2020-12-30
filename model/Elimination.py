@@ -11,7 +11,7 @@ class Elimination:
         """
         self.players = players.copy()
         self.active = players.copy()
-        self.matches = self.generate_bracket()
+        self.generate_bracket()
 
     def get_players(self):
         """
@@ -63,9 +63,6 @@ class Elimination:
         """
         self.active.remove(player)
 
-    def report(self, match_id, loser):
-        pass
-
     def generate_bracket(self):
         """
         Generate a single elimination bracket with the active players
@@ -91,7 +88,7 @@ class Elimination:
 
         matches = [Match(blue_side[i], red_side[i]) for i in range(len(blue_side))]  # -->(5)
 
-        return matches
+        self.matches = matches
 
         # (1)--> Calculates the nearest power of two bigger than the number of players
         # (2)--> Selects half of the bracket size to be the "blue side" of the matches
@@ -105,3 +102,8 @@ if __name__ == '__main__':
     e = Elimination(players)
     print(e.matches_to_string())
     print(e.active)
+    e.eliminate('p3')
+    e.eliminate('p4')
+    print(e.active)
+    e.generate_bracket()
+    print(e.matches_to_string())
