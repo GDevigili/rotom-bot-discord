@@ -14,6 +14,9 @@ class Elimination:
         self.generate_bracket()
         self.matches = []
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Getters
+
     def get_players(self):
         """
         Return the list with all players.
@@ -32,6 +35,9 @@ class Elimination:
         """
         return self.matches
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Aesthetic functions
+
     def matches_to_string(self):
         """
         Return a String with the matches.
@@ -42,6 +48,9 @@ class Elimination:
             cont += 1
             matches_str += f"> ID: {cont} | {match.to_string()} \n"
         return matches_str
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Player Management
 
     def add_player(self, player: Member):
         """
@@ -63,6 +72,9 @@ class Elimination:
         :param player: The player who will be removed
         """
         self.active.remove(player)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Bracket Management
 
     def generate_bracket(self):
         """
@@ -97,6 +109,8 @@ class Elimination:
         # (4)--> Fills the red size with BYEs until the length of red_side is equal to half of the bracket size
         # (5)--> Pairs up the blue and red sides to make the matches
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Tests
 
 if __name__ == '__main__':
     players = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
