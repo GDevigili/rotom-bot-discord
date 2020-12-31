@@ -89,11 +89,8 @@ async def get_nick(ctx, tagged_user=None):
     Send a message with the game nickname of the tagged discord user
     """
     if tagged_user:
-        print(tagged_user)
         aux = [char for char in tagged_user if char.isdigit()]
-        print(aux)
         tagged_user = "".join(map(str, aux))
-        print(tagged_user)
         dao = DaoNickname()
         nickname = dao.select_nickname(tagged_user)
         if nickname:
