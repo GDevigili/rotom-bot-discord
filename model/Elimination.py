@@ -116,7 +116,7 @@ class Elimination:
         :return: the match which has the specified player
         """
         for match in self.matches:
-            if player in match:
+            if player in match.players:
                 return match
 
 # ----------------------------------------------------------------------------------------------------------------------

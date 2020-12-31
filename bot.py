@@ -199,10 +199,10 @@ async def report_score(ctx, result:str=None):
             tournament.eliminate(ctx.author)
         else:
             match = tournament.locate_match(player=ctx.author)
-            if ctx.author == match[0]:
-                tournament.eliminate(match[0])
+            if ctx.author == match.players[0]:
+                tournament.eliminate(match.players[1])
             else:
-                tournament.eliminate(match[1])
+                tournament.eliminate(match.players[0])
 
 
 @bot.command(name="active-players", aliases=["ap"])
