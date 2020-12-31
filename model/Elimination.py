@@ -12,6 +12,7 @@ class Elimination:
         self.players = players.copy()
         self.active = players.copy()
         self.generate_bracket()
+        self.matches = []
 
     def get_players(self):
         """
@@ -31,7 +32,7 @@ class Elimination:
         """
         return self.matches
 
-    def matches_to_string(self, mention=False):
+    def matches_to_string(self):
         """
         Return a String with the matches.
         """
