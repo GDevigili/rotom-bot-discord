@@ -1,6 +1,6 @@
 from random import randint
 from discord.member import Member
-from Match import Match
+from model.Match import Match
 
 
 class Elimination:
@@ -108,6 +108,16 @@ class Elimination:
         # (3)--> Selects the remaining players to be the "red side" of the matches
         # (4)--> Fills the red size with BYEs until the length of red_side is equal to half of the bracket size
         # (5)--> Pairs up the blue and red sides to make the matches
+
+    def locate_match(self, player):
+        """
+        Locates the match which has the param player
+        :param player: the player who is in the wanted match
+        :return: the match which has the specified player
+        """
+        for match in self.matches:
+            if player in match:
+                return match
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Tests
