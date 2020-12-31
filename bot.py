@@ -38,14 +38,14 @@ async def on_message(message):
 # Help Function
 
 
-@bot.command(name="help", aliases=["h", "ajuda"])
-async def help(ctx, command=None):
-    command_help_list = ["check-in"]
-    if command is None:
-        await ctx.channel.send("Informe o comando do qual você quer ajuda")
-        return 0
-    if command == "report":
-        pass
+# @bot.command(name="help", aliases=["h", "ajuda"])
+# async def help(ctx, command=None):
+#     command_help_list = ["check-in"]
+#     if command is None:
+#         await ctx.channel.send("Informe o comando do qual você quer ajuda")
+#         return 0
+#     if command == "report":
+#         pass
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compliment Functions
@@ -183,18 +183,25 @@ async def start_tournament(ctx, type:str="elimination"):
     if type.lower() == "elimination":
         global tournament
         tournament = Elimination(check_lst)
-        await ctx.channel.send(tournament.matches_to_string(True))
+        await ctx.channel.send(tournament.matches_to_string())
 
 
 @bot.command(name="report")
-async def report_score(ctx, result=None):
+async def report_score(ctx, result:str=None):
     if str(result).lower() not in ["win", "loss"]:
         await ctx.channel.send(f"Parece que você usou errado este comando.\n"
                                f"Tente usar `{bot.command_prefix}report win` se você venceu ou "
                                f"`{bot.command_prefix}report loss` se você perdeu")
     else:
-        pass
-
+        global tournament
+        if str(result).lower() == "loss":
+            tournament.eliminate(ctx.author)
+        else:
+            match = tournament.locate_match(player=ctx.author)
+            if ctx.author == match[0]:
+                tournament.eliminate(match[0])
+            else:
+                tournament.eliminate(match[1])
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
