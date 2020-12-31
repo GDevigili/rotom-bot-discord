@@ -183,6 +183,7 @@ async def start_tournament(ctx, type:str="elimination"):
     if type.lower() == "elimination":
         global tournament
         tournament = Elimination(check_lst)
+        tournament.generate_bracket()
         await ctx.channel.send(tournament.matches_to_string())
 
 
