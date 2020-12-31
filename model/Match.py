@@ -4,13 +4,13 @@ from discord.member import Member
 class Match:
     def __init__(self, p0, p1):
         self.players = [p0, p1]
-        self.winner = None
+        # self.winner = None
 
     def set_player(self, player, id):
         self.players[id] = player
 
-    def set_winner(self, player):
-        self.winner = player
+    # def set_winner(self, player):
+    #     self.winner = player
 
     def to_string(self, mention=False):
         if type(self.players[0]) == Member and mention:
