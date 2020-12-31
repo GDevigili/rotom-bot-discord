@@ -203,6 +203,16 @@ async def report_score(ctx, result:str=None):
             else:
                 tournament.eliminate(match[1])
 
+
+@bot.command(name="active-players", aliases=["ap"])
+@commands.has_any_role(admin_role)
+async def get_active_players(ctx):
+    global tournament
+    aux = "Jogadores ativos:"
+    for player in tournament.active:
+        aux += f"\n> {player.mention}"
+    await ctx.channel.send(aux)
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
 giveaway_list = []
@@ -252,5 +262,6 @@ def error_msg(error):
            f"{error}" \
            f"```\n" \
            f"Informe ao desenvolvedor para que ele possa ser resolvido"
+
 
 bot.run(TOKEN)
