@@ -4,6 +4,7 @@
 import discord as d
 from discord.ext.commands import Bot
 from discord.ext import commands
+from discord.member import Member
 
 # Project imports
 import private.app_data as my_app
@@ -194,6 +195,8 @@ async def report_score(ctx, result:str=None):
         global tournament
         if str(result).lower() == "loss":
             tournament.eliminate(ctx.author)
+            await ctx.channel.send(f"{ctx.author} você foi eliminado, "
+                                   f"quem sabe na próxima você se torna o nosso campeão?")
         else:
             match = tournament.locate_match(player=ctx.author)
             if ctx.author == match.players[0]:
@@ -210,6 +213,22 @@ async def get_active_players(ctx):
     for player in tournament.active:
         aux += f"\n> {player.mention}"
     await ctx.channel.send(aux)
+
+
+@bot.command(name="add-player")
+@commands.has_any_role(admin_role)
+async def add_player(ctx, player: Member):
+    global tournament
+    tournament.add_player(player)
+    await ctx.channel.send(f"{player.mention} foi adicionado ao torneio")
+
+
+@bot.command(name="remove-player")
+@commands.has_any_role(admin_role)
+async def remove_player(ctx, player):
+    global tournament
+    tournament.drop_player(player)
+    await ctx.channel.send(f"{player.mention} foi removido do torneio")
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
