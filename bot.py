@@ -168,6 +168,15 @@ async def check_in_list(ctx, mention=False):
             check_str += f"> {player}\n"
     await ctx.channel.send(check_str)
 
+
+@bot.command(name="check-out", aliases=["checkout"])
+async def check_out(ctx):
+    if ctx.author in check_lst:
+        check_lst.remove(ctx.author)
+        await ctx.channel.send("Check-out realizado com sucesso")
+    else:
+        await ctx.channel.send("Check-out não realizado pelo motivo:```Jogador não fez check-in```")
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Tournament Functions
 
@@ -203,7 +212,8 @@ async def report_score(ctx, result:str=None):
                 tournament.eliminate(match.players[1])
             else:
                 tournament.eliminate(match.players[0])
-            await ctx.channel.send(f"Parabéns {ctx.author}, nos vemos na próxima fase")
+            await ctx.channel.send(f"Parabéns "
+                                   f"{ctx.author}, nos vemos na próxima fase")
 
 
 @bot.command(name="active-players", aliases=["ap"])
@@ -224,13 +234,11 @@ async def add_player(ctx, player: Member):
     await ctx.channel.send(f"{player.mention} foi adicionado ao torneio")
 
 
-@bot.command(name="remove-player")
-@commands.has_any_role(admin_role)
-async def remove_player(ctx, player: Member):
+@bot.command(name="drop")
+async def remove_player(ctx):
     global tournament
-    print(player)
-    print(tournament.active)
-    await ctx.channel.send(f"{player.mention} foi removido do torneio")
+    tournament.eliminate(ctx.author)
+    await ctx.channel.send(f"{ctx.author} foi removido do torneio")
 
 
 @bot.command(name="gen-bracket")
