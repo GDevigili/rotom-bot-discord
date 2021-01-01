@@ -203,6 +203,7 @@ async def report_score(ctx, result:str=None):
                 tournament.eliminate(match.players[1])
             else:
                 tournament.eliminate(match.players[0])
+            await ctx.channel.send(f"Parabéns {ctx.author}, nos vemos na próxima fase")
 
 
 @bot.command(name="active-players", aliases=["ap"])
