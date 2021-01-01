@@ -57,7 +57,7 @@ class Elimination:
         Add a player in the players list
         :param player: The player who will be added
         """
-        self.players.append(player)
+        self.active.append(player)
 
     def drop_player(self, player):
         """

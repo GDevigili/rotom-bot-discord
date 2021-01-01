@@ -225,10 +225,19 @@ async def add_player(ctx, player: Member):
 
 @bot.command(name="remove-player")
 @commands.has_any_role(admin_role)
-async def remove_player(ctx, player):
+async def remove_player(ctx, player: Member):
     global tournament
-    tournament.drop_player(player)
+    print(player)
+    print(tournament.active)
     await ctx.channel.send(f"{player.mention} foi removido do torneio")
+
+
+@bot.command(name="gen-bracket")
+@commands.has_any_role(admin_role)
+async def generate_bracket(ctx):
+    global tournament
+    tournament.generate_bracket()
+    await ctx.channel.send(tournament.matches_to_string())
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
