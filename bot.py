@@ -5,6 +5,7 @@ import discord as d
 from discord.ext.commands import Bot
 from discord.ext import commands
 from discord.member import Member
+from discord import Client
 
 # Project imports
 import private.app_data as my_app
@@ -13,7 +14,6 @@ from model.Elimination import Elimination
 
 # Other imports
 from random import randint
-
 
 TOKEN = my_app.get_bot_token()
 bot = Bot(command_prefix="+", case_insensitive=True)
@@ -28,12 +28,14 @@ async def on_ready():
     """
     print(f'Bot connected as {bot.user}')
 
+
 """
 @bot.event
 async def on_message(message):
     if str(message.author.id) == "635629811993411594" or "<@!635629811993411594>" in message.content:
         await message.add_reaction("<:CorvoBan:782690759522123816>")
 """
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Help Function
@@ -117,6 +119,7 @@ async def get_discord_nick(ctx, nickname):
 
 check_lst = []
 check_in_status = False
+decklists = []
 
 
 @bot.command(name="start-check-in", aliases=["start-checkin", "checkin-start", "check-in-start"])
@@ -127,8 +130,10 @@ async def check_in_start(ctx):
     This function allows the users to use the {bot.command_prefix}check-in function.
     """
     global check_lst
+    global decklists
     global check_in_status
     check_lst = []
+    decklists = []
     check_in_status = True
     await ctx.channel.send(f"O check-in está aberto!. "
                            f"Use o comando `{bot.command_prefix}check-in` para participar do torneio")
@@ -140,14 +145,23 @@ async def check_in(ctx):
     Add the author of the message to the check-in list.
     """
     if check_in_status:
-        if ctx.author not in check_lst:
+
+        if ctx.author not in decklists:
+            await ctx.channel.send(f"Parece que você ainda não registrou a decklist \n"
+                                   f"Vá para #decklists "
+                                   f"e envie sua decklist com o comando `{bot.command_prefix}decklist`")
+
+        elif ctx.author not in check_lst:
             check_lst.append(ctx.author)
             if ctx.author in check_lst:
                 await ctx.channel.send(f"{ctx.author.mention}, seu check-in foi realizado com sucesso")
+
             else:
-                await ctx.channel.send(error_msg("Check-in não realizado"))
+                await ctx.channel.send(error_msg("Check-in não realizado, favor informe o erro ao desenvolvedor"))
+
         else:
             await ctx.channel.send(f"{ctx.author.mention}, seu check-in já foi realizado")
+
     else:
         await ctx.channel.send("O check-in não está aberto")
 
@@ -177,6 +191,19 @@ async def check_out(ctx):
     else:
         await ctx.channel.send("Check-out não realizado pelo motivo:```Jogador não fez check-in```")
 
+
+@bot.command(name="decklist")
+async def set_decklist(ctx, *decklist):
+    if "60" in decklist:
+        global decklists
+        decklists.append(ctx.author)
+        await ctx.channel.send(f"{ctx.author.mention}, sua decklist foi registrada com sucesso.\n"
+                               f"Vá para #chat-torneio"
+                               f"e faça `{bot.command_prefix}check-in`")
+    else:
+        await ctx.channel.send(f"{ctx.author.mention} ops, parece que sua decklist não é válida, tente novamente.")
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Tournament Functions
 
@@ -185,7 +212,7 @@ tournament = Elimination([])
 
 @bot.command(name="start-tournament", aliases=["tournament-start"])
 @commands.has_any_role(admin_role)
-async def start_tournament(ctx, type:str="elimination"):
+async def start_tournament(ctx, type: str = "elimination"):
     global check_lst
     if type.lower() == "elimination":
         global tournament
@@ -195,7 +222,7 @@ async def start_tournament(ctx, type:str="elimination"):
 
 
 @bot.command(name="report")
-async def report_score(ctx, result:str=None):
+async def report_score(ctx, result: str = None):
     if str(result).lower() not in ["win", "loss"]:
         await ctx.channel.send(f"Parece que você usou errado este comando.\n"
                                f"Tente usar `{bot.command_prefix}report win` se você venceu ou "
@@ -247,6 +274,7 @@ async def generate_bracket(ctx):
     global tournament
     tournament.generate_bracket()
     await ctx.channel.send(tournament.matches_to_string())
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Giveaway Functions
