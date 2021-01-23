@@ -204,6 +204,7 @@ async def set_decklist(ctx, *decklist):
         await ctx.channel.send(f"{ctx.author.mention} ops, parece que sua decklist não é válida, tente novamente.")
 
 
+# Just testing bruh
 # ----------------------------------------------------------------------------------------------------------------------
 # Tournament Functions
 
